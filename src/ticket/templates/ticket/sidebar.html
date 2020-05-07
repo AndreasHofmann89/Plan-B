@@ -1,0 +1,47 @@
+        <div class="content-section">
+            <h3>Filterbar</h3>
+              <ul class="list-group">
+
+                <form action="{% url 'ticket-home' %}">
+                    <div id="div_id_status" class="form-group">
+                        <label for="id_status">Status</label>
+                        <div class="">
+                        <select name="status" class="select form-control" id="id_status">
+                            <option value="*" selected>All</option>
+                            <option value="OP">Open</option>
+                            <option value="IP">In Progress</option>
+                            <option value="DN">Done</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div id="div_id_type" class="form-group">
+                        <label for="id_type">Type</label>
+                        <div class="">
+                        <select name="type" class="select form-control" id="id_type">
+                            <option value="*" selected>All</option>
+                            <option value="IN">Incident</option>
+                            <option value="BG">Bug</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div id="div_id_priority" class="form-group">
+                        <label for="id_priority">Priority </label>
+                        <div class="">
+                        <select name="priority" class="select form-control" id="id_priority">
+                            <option value="*" selected>All</option>
+                            <option value="LW">Low</option>
+                            <option value="N">Normal</option>
+                            <option value="HI">High</option>
+                        </select>
+                        </div>
+                    </div>
+
+                  <div class="form-group">
+                    <label for="filter">Title / Description includes:</label>
+                    <input name="filter" type="filter" class="form-control" placeholder="Search" id="filter">
+                  </div>
+                    <button class="btn btn-search" type="submit">Filter</button>
+                </form>
+
+              </ul>
+          </div>

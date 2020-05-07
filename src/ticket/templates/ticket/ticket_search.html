@@ -1,0 +1,26 @@
+{% extends "ticket/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load render_table from django_tables2 %}
+{% block content%}
+
+  <form method="get">
+    <div class="content-section planb-window planb-text mt-3">
+      <h4 class="planb-heading">Filter</h4>
+      <div class="row">
+        {% for field in filter.form %}
+            <div class="form-group col-sm-4 col-md-3">
+                {{ field.label_tag }}
+                {% render_field field class="form-control" %}
+            </div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn bg-orange btn-outline-light planb-text">
+        <span class="glyphicon glyphicon-search"></span> Search
+      </button>
+    </div>
+  </form>
+
+    {% render_table table %}
+
+{% endblock content %}

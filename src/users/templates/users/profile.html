@@ -1,0 +1,74 @@
+{% extends "ticket/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+    {% if object.profile.user == request.user %}
+    <div class="content-section mt-3 planb-window planb-text">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ object.profile.image.url}}">
+        <div class="media-body">
+          <h2 class="account-heading text-orange">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+            <form method="post" action="{% url 'user-profileView' user.pk%}">
+                {% csrf_token %}
+                <small>{{ pform }}</small>
+                <small><button type="submit">hochladen</button></small>
+            </form>
+        </div>
+      </div>
+         <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Profile Info</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-dark bg-orange text-dark" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+    {% else %}
+        <div class="content-section mt-3 planb-window planb-text">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ object.profile.image.url}}">
+        <div class="media-body">
+          <h2 class="account-heading text-orange">{{ object.username }}</h2>
+          <p class="text-secondary">{{ object.email }}</p>
+        </div>
+      </div>
+        <div class="media-body">
+            <hr>
+            <ul>
+                <p class="account-heading text-orange" >Tickets</p>
+                <div class="row">
+                    <div class="col-sm-4">
+                    <h6>Open</h6>
+                    <hr>
+                        {% for tickets in object.assigned_user.all %}
+                            {% if tickets.status == 'OP' %}
+                                <li><a class ="planb-heading" href="{% url 'ticket-detail' tickets.id %}">{{ tickets }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-4">
+                    <h6>In Progress</h6>
+                    <hr>
+                        {% for tickets in object.user.assigned_user.all %}
+                            {% if tickets.status == 'IP' %}
+                                <li><a class ="planb-heading" href="{% url 'ticket-detail' tickets.id %}">{{ tickets }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-4">
+                    <h6>Done</h6>
+                    <hr>
+                        {% for tickets in object.user.assigned_user.all %}
+                            {% if tickets.status == 'DN' %}
+                                <li><a class ="planb-heading" href="{% url 'ticket-detail' tickets.id %}">{{ tickets }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </ul>
+        </div>
+    {% endif %}
+{% endblock content %}

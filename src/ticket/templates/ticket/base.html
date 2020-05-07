@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% if title %}
+        <title>Plan B - {{ title }}</title>
+    {% else %}
+        <title>Plan B</title>
+    {% endif %}
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{%  static 'ticket/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%  static 'ticket/sidebar.css' %}">
+{#    <link rel="stylesheet" type="text/css" href="{%  static 'ticket/comment.css' %}">#}
+
+    <!-- Bootstrap 4 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+
+    <!--font-awesome-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+
+    <!-- Tempus Dominus Bootstrap 4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
+
+
+
+</head>
+
+ <body>
+  <div class="d-flex planb-bg" id="wrapper">
+    <!-- Sidebar -->
+    <div class="planb-bg border-right" id="sidebar-wrapper">
+      <img width="230" src="{{ MEDIA_ROOT }}/media/Logo_planB.png"/>
+      <div class="list-group list-group-flush">
+        <a href="{% url 'ticket-home' %}" class="list-group-item list-group-item-action planb-bg planb-link"><i class="fa fa-align-justify"></i> Dashboard</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'ticket-create' %}" class="list-group-item list-group-item-action planb-bg planb-link"><i class="fa fa-plus-circle"></i> New Ticket</a>
+            <a href="{% url 'ticket-search' %}" class="list-group-item list-group-item-action planb-bg planb-link"><i class="fa fa-filter"></i> Filter Page</a>
+            <a href="{% url 'ticket-search' %}?assigned_user={{ user.pk }}" class="list-group-item list-group-item-action planb-bg planb-link"><i class="fa fa-list"></i> My Tickets</a>
+            <a href="{% url 'ticket-search' %}?date_expire__lt={% now "m/d/Y" %}" class="list-group-item list-group-item-action planb-bg planb-link"><i class="fa fa-times-circle"></i> Expired Tickets</a>
+            <a href="{% url 'user-profile'%}" class="list-group-item list-group-item-action planb-bg planb-link"><i class="fa fa-user-circle"></i> Profile</a>
+            <a href="{% url 'user-all' %}" class="list-group-item list-group-item-action planb-bg planb-link"><i class="fa fa-users"></i> Users</a>
+        {% endif %}
+        <a href="{% url 'ticket-about' %}" class="list-group-item list-group-item-action planb-bg planb-link"><i class="fa fa-info-circle"></i> About</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-dark planb-bg border-bottom">
+        <button class="btn bg-orange btn-outline-light planb-text mr-5" id="menu-toggle">Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+      {% if user.is_authenticated %}
+          <form class="form-inline" action="{% url 'ticket-search' %}">
+            <input class="form-control mr-sm-2 planb-bg planb-text" type="text" name="title__icontains" placeholder="Search Title">
+            <button class="btn bg-orange btn-outline-light planb-text mr-5"  type="submit">Search</button>
+          </form>
+      {% endif %}
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link planb-link" href="{% url 'ticket-home' %}"><i class="fa fa-home" style="padding-right: 10px"></i>Home <span class="sr-only">(current)</span></a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-item nav-link planb-link" href="{% url 'user-profile' %}"><i class="fa fa-user-circle" style="padding-right: 10px"></i>Profile</a></li>
+                <li class="nav-item"><a class="nav-item nav-link planb-link" href="{% url 'logout' %}"><i class="fa fa-sign-out" style="padding-right: 10px"></i>Logout</a></li>
+            {% else %}
+                <li class="nav-item"><a class="nav-item nav-link planb-link" href="{% url 'login' %}"><i class="fa fa-sign-in" style="padding-right: 10px"></i>Login</a></li>
+                <li class="nav-item"><a class="nav-item nav-link planb-link" href="{% url 'register' %}"><i class="fa fa-registered" style="padding-right: 10px"></i>Register</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+
+      <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-12 mt-3">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+        <div class="col-md-4">
+            {% block sidebar %}{% endblock %}
+        </div>
+      </div>
+    </main>
+
+    </div>
+    <!-- /page-content-wrapper -->
+
+  </div>
+  <!-- /wrapper -->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+     <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+  </body>
+</html>

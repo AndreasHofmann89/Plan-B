@@ -1,0 +1,49 @@
+{% extends "ticket/ticket_detail.html" %}
+{% load crispy_forms_tags %}
+{% block comment %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4 text-orange"></legend>
+                <div class="form-row">
+                    <div class="small">
+                    </div>
+                    <div class="form-group col-md-12 mb-0">
+                        {{ form.text|as_crispy_field}}
+                    </div>
+                </div>
+            <input type="hidden" value="{{ object.id }}">
+                <div class="form-row">
+                    <button type="submit" class="btn bg-orange btn-outline-light planb-text mr-5", >Submit</button>
+                </div>
+
+        </fieldset>
+    </form>
+    <br>
+    <h3 class="article-title text-orange">Comments</h3>
+    {% for comment in object.comments.all %}
+{#        <div class="chat-container">#}
+{#            <img class="img" height="40" src="{{ comment.author.profile.image.url }}"/>#}
+{#            <img class="rounded-circle account-img" src="{{ user.profile.image.url}}">#}
+{#            <small class="text-muted">{{ comment.date_posted }}</small>#}
+{#            <p class="clear-fix">{{ comment.text }}</p>#}
+{#        </div>#}
+
+        <hr>
+        <li class="media">
+                <a href="#" class="pull-left">
+                    <img src="{{ comment.author.profile.image.url }}" height="50" width="50" class="rounded" style="padding-right: 5px">
+                </a>
+                <div class="media-body">
+                    <span class="text-muted pull-right">
+                        <small class="text-muted">{{ comment.date_posted }}</small>
+                    </span>
+                    <strong class="text">{{ comment.author }}</strong>
+                    <p>
+                        {{ comment.text }}
+                    </p>
+                </div>
+        </li>
+    {% endfor %}
+{% endblock %}

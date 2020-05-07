@@ -1,0 +1,112 @@
+{% extends "ticket/base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+   <article class="media content-section planb-window planb-text mt-3">
+        <div class="media-body">
+            <div class="article-metadata">
+                <div class="row">
+                    <div class="col-11">
+                        <a class="mr-2 text-orange" href="#">{{ object.author }}</a>
+                        <small class="text-muted">{{ object.date_posted|date:"d.m.Y" }}</small>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'ticket-update' object.id %}">Edit</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'ticket-delete' object.id %}">Delete</a>
+                    </div>
+                    <div class="col-1">
+                        <form method="post" action="{% url 'follow'%}">
+                            {% csrf_token %}
+                                <input type="hidden" name="follow" value="{{ object.id }}">
+                            {% if user in object.ticket_follower.all %}
+                                <button class="btn btn-danger btn-sm mt-1 mb-1 align-items-end">-</button>
+                            {% else %}
+                                <button class="btn btn-success btn-sm mt-1 mb-1 align-items-end">+</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+{#        </div>#}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="article-title text-orange">{{ object.title }}</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><p class="article-content"><i class="fa fa-wrench" style="padding-right: 10px"></i>Status: {{ object.get_status_display }}</p></div>
+                <div class="col-sm-4"><p class="article-content"><i class="fa fa-bolt" style="padding-right: 10px"></i>Type: {{ object.get_type_display }}</p></div>
+                <div class="col-sm-4"><p class="article-content"><i class="fa fa-info-circle" style="padding-right: 10px"></i>Priority: {{ object.get_priority_display  }}</p></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p><i class="fa fa-user" style="padding-right: 10px"></i>Assigned User:
+                        {% if object.assigned_user != null %}
+{#                            {% if forloopcounter > 1 %}#}
+                                {{ object.assigned_user  }}
+{#                            {% endif %}#}
+                        {% endif %}
+                    </p>
+
+                </div>
+
+                <div class="col-sm-6">
+
+                    <p><i class="fa fa-users" style="padding-right: 10px"></i>Follower:
+                        {% for us in object.ticket_follower.all %}
+                            {% if us != null %}
+                                <a>{{ us }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-12">
+                    {% if object.date_expire != null%}
+                        <p class="article-content"><i class="fa fa-clock-o" style="padding-right: 10px"></i>Expire: <a id="demo"></a></p>
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                <p class="article-content content-section planb-bg planb-text" >{{ object.description }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <small class="text-muted">Date Posted: {{ object.date_posted|date:"d.m.Y H:i" }}, Last Modified: {{ object.last_modified|date:"d.m.Y H:i" }}</small>
+            </div>
+            {% block comment %}{% endblock %}
+        </div>
+      </div>
+    </article>
+
+    <script>
+    var expire = "{{ object.date_expire.timestamp }}";
+    // Set the date we're counting down to
+    var countDownDate = expire*1000;
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+        // Get today's date and time
+        var now = new Date().getTime();
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the element with id="demo"
+        document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+        + minutes + "m " + seconds + "s ";
+
+        if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("demo").innerHTML = "EXPIRED";
+    }
+    }, 1000);
+    </script>
+{% endblock content %}
+

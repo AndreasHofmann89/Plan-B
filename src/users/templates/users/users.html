@@ -1,0 +1,23 @@
+{% extends 'ticket/base.html' %}
+{% block content %}
+    <div class="content-section mt-3 planb-window planb-text">
+    <h3 class="article-title text-orange">Users</h3>
+    {% for u in users %}
+        <hr>
+        <li class="media">
+                <a href="{% url 'user-profileView' u.id %}" class="pull-left">
+                    <img src="{{ u.profile.image.url}}" height="50" width="50" class="rounded" style="padding-right: 5px">
+                </a>
+                <div class="media-body">
+                    <span class="text-muted pull-right">
+                        <small class="text-muted">Last login: {{ u.last_login }}</small>
+                    </span>
+                    <strong class="text" ><a class ="planb-heading" href="{% url 'user-profileView' u.id %}">{{ u.username }}</a></strong>
+                    <p>
+                        {{ u.email }}
+                    </p>
+                </div>
+        </li>
+    {% endfor %}
+    </div>
+{% endblock %}

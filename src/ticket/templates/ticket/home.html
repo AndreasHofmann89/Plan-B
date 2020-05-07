@@ -1,0 +1,27 @@
+{% extends "ticket/base.html" %}
+{% block content %}
+    {% for ticket in tickets %}
+       <article class="media content-section planb-window planb-text mt-3">
+          <div class="media-body">
+            <div >
+
+              {% if ticket.priority == 'LW' %}
+                <span class="badge badge-pill badge-success">
+              {% elif ticket.priority == 'N' %}
+                <span class="badge badge-pill badge-warning">
+              {% else %}
+                <span class="badge badge-pill badge-danger">
+              {% endif %}
+              {{ ticket.get_priority_display  }}</span>
+
+            </div>
+            <h2><a class="article-title planb-heading" href="{% url 'ticket-detail' ticket.id %}">{{ ticket.title }}</a></h2>
+            <p class="article-content">{{ ticket.description|truncatechars:100 }}</p>
+            <div class="article-metadata"></div>
+              <a class="mr-2 planb-heading" href="#">{{ ticket.author }}</a>
+              <small class="text-muted">{{ ticket.date_posted|date:"d.m.Y" }}</small>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
+

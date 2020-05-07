@@ -1,0 +1,45 @@
+{% extends "ticket/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+    <div class="content-section planb-window planb-text mt-3">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4 text-orange">Ticket Editor</legend>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            {{ form.title|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            {{ form.status|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            {{ form.type|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            {{ form.date_expire|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            {{ form.priority|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                            {{ form.assigned_user|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-12 mb-0">
+                            {{ form.description|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                            <button type="submit" class="btn bg-orange btn-outline-light planb-text mr-5">Apply</button>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
