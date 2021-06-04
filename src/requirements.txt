@@ -1,5 +1,5 @@
 django-filter
-Django==3.0.2
+Django==3.1.9
 django-crispy-forms==1.8.1
 django-widget-tweaks==1.4.5
 Pillow==7.0.0
